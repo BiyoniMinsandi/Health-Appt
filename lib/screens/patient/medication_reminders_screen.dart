@@ -48,7 +48,7 @@ class _MedicationRemindersScreenState extends State<MedicationRemindersScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Medication Reminders'),
-        backgroundColor: Colors.purple[600],
+        backgroundColor: Colors.teal[600],
         foregroundColor: Colors.white,
       ),
       body: ListView.builder(
@@ -139,7 +139,7 @@ class _MedicationRemindersScreenState extends State<MedicationRemindersScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addReminder,
-        backgroundColor: Colors.purple[600],
+        backgroundColor: Colors.teal[600],
         child: Icon(Icons.add),
       ),
     );

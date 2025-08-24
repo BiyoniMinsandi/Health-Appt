@@ -37,7 +37,7 @@ class _WorkoutPlansScreenState extends State<WorkoutPlansScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Workout Plans'),
-        backgroundColor: Colors.orange[600],
+        backgroundColor: Colors.green[600],
         foregroundColor: Colors.white,
       ),
       body: _isLoading
@@ -111,7 +111,7 @@ class _WorkoutPlansScreenState extends State<WorkoutPlansScreen> {
                           child: ElevatedButton(
                             onPressed: () => _startWorkout(plan),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.orange[600],
+                              backgroundColor: Colors.green[600],
                               foregroundColor: Colors.white,
                             ),
                             child: Text('Start Workout'),
@@ -156,7 +156,7 @@ class _WorkoutPlansScreenState extends State<WorkoutPlansScreen> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('Workout started! Good luck!'),
-                  backgroundColor: Colors.orange[600],
+                  backgroundColor: Colors.green[600],
                 ),
               );
             },

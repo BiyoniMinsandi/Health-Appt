@@ -94,7 +94,7 @@ class ChatListScreen extends StatelessWidget {
                           contact['specialization'],
                           style: TextStyle(
                             fontSize: 12,
-                            color: Colors.blue[600],
+                            color: Colors.teal[600],
                           ),
                         ),
                         SizedBox(height: 4),
@@ -156,7 +156,7 @@ class ChatListScreen extends StatelessWidget {
           _showNewChatDialog(context);
         },
         child: Icon(Icons.add),
-        backgroundColor: Colors.blue[600],
+        backgroundColor: Colors.teal[600],
       ),
     );
   }

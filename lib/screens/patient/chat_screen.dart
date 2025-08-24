@@ -53,7 +53,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ],
         ),
-        backgroundColor: Colors.blue[600],
+        backgroundColor: Colors.teal[600],
         foregroundColor: Colors.white,
         actions: [
           IconButton(
@@ -129,7 +129,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           maxWidth: MediaQuery.of(context).size.width * 0.7,
                         ),
                         decoration: BoxDecoration(
-                          color: isMe ? Colors.blue[600] : Colors.grey[300],
+                          color: isMe ? Colors.teal[600] : Colors.grey[300],
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Column(
@@ -198,7 +198,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 SizedBox(width: 8),
                 CircleAvatar(
-                  backgroundColor: Colors.blue[600],
+                  backgroundColor: Colors.teal[600],
                   child: IconButton(
                     icon: Icon(Icons.send, color: Colors.white),
                     onPressed: _sendMessage,

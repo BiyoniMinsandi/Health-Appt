@@ -16,7 +16,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Doctor Dashboard'),
-        backgroundColor: Colors.blue[600],
+        backgroundColor: Colors.teal[600],
         foregroundColor: Colors.white, // Remove if your Flutter version does not support this
         actions: [
           PopupMenuButton<String>(
@@ -51,7 +51,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
           });
         },
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.blue[600],
+        selectedItemColor: Colors.teal[600],
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),

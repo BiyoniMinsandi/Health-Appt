@@ -1,7 +1,15 @@
 // screens/patient/health_analytics_screen.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 import '../../providers/health_data_provider.dart';
+
+class TimeSeriesValue {
+  final DateTime timestamp;
+  final double value;
+
+  TimeSeriesValue(this.timestamp, this.value);
+}
 
 class HealthAnalyticsScreen extends StatefulWidget {
   @override
@@ -218,57 +226,186 @@ class _HealthAnalyticsScreenState extends State<HealthAnalyticsScreen> {
       );
     }
 
+    // Create chart data
+    final chartData = sortedData.map((data) {
+      return TimeSeriesValue(
+        data.timestamp,
+        data.value.toDouble(),
+      );
+    }).toList();
+
+    final series = [
+      charts.Series<TimeSeriesValue, DateTime>(
+        id: 'HealthData',
+        colorFn: (_, __) => charts.MaterialPalette.teal.shadeDefault,
+        domainFn: (TimeSeriesValue value, _) => value.timestamp,
+        measureFn: (TimeSeriesValue value, _) => value.value,
+        data: chartData,
+      )
+    ];
+
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey[100],
+        color: Colors.white,
         borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.grey[300]!),
       ),
-      child: Center(
-        child: Text(
-          '📈 Chart visualization would go here\n(${sortedData.length} data points)',
-          textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.grey[600]),
+      child: Padding(
+        padding: EdgeInsets.all(8),
+        child: charts.TimeSeriesChart(
+          series,
+          animate: true,
+          dateTimeFactory: const charts.LocalDateTimeFactory(),
+          behaviors: [
+            charts.ChartTitle(
+              'Trend Over Time',
+              behaviorPosition: charts.BehaviorPosition.top,
+              titleOutsideJustification: charts.OutsideJustification.start,
+            ),
+          ],
+          primaryMeasureAxis: charts.NumericAxisSpec(
+            tickProviderSpec: charts.BasicNumericTickProviderSpec(
+              zeroBound: false,
+            ),
+          ),
         ),
       ),
     );
   }
 
   Widget _buildHealthInsights() {
-    return Card(
-      child: Padding(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Health Insights',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+    return Consumer<HealthDataProvider>(
+      builder: (context, healthProvider, child) {
+        final healthScore = healthProvider.getHealthScore();
+        final recommendations = healthProvider.getHealthRecommendations();
+        final bmi = healthProvider.calculateBMI();
+        
+        return Card(
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Health Insights',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 16),
+                
+                // Health Score
+                Container(
+                  padding: EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: _getScoreColor(healthScore).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        _getScoreIcon(healthScore),
+                        color: _getScoreColor(healthScore),
+                        size: 24,
+                      ),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Health Score',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              '$healthScore/100 - ${_getScoreDescription(healthScore)}',
+                              style: TextStyle(color: _getScoreColor(healthScore)),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                
+                if (bmi != null) ...[
+                  SizedBox(height: 12),
+                  _buildInsightItem(
+                    '📏 BMI',
+                    'Your BMI is ${bmi.toStringAsFixed(1)} - ${_getBMICategory(bmi)}',
+                    _getBMIColor(bmi),
+                  ),
+                ],
+                
+                SizedBox(height: 16),
+                Text(
+                  'Recommendations',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 8),
+                
+                ...recommendations.map((recommendation) => Padding(
+                  padding: EdgeInsets.only(bottom: 8),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(
+                        Icons.lightbulb,
+                        color: Colors.amber,
+                        size: 16,
+                      ),
+                      SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          recommendation,
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ),
+                    ],
+                  ),
+                )),
+              ],
             ),
-            SizedBox(height: 16),
-            _buildInsightItem(
-              '🎯 Goal Achievement',
-              'You\'re on track with your health monitoring!',
-              Colors.green,
-            ),
-            SizedBox(height: 12),
-            _buildInsightItem(
-              '📊 Data Consistency',
-              'Try to record data at consistent times daily.',
-              Colors.orange,
-            ),
-            SizedBox(height: 12),
-            _buildInsightItem(
-              '💡 Recommendation',
-              'Consider tracking your sleep and exercise data too.',
-              Colors.blue,
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
+  }
+
+  Color _getScoreColor(int score) {
+    if (score >= 80) return Colors.green;
+    if (score >= 60) return Colors.orange;
+    return Colors.red;
+  }
+
+  IconData _getScoreIcon(int score) {
+    if (score >= 80) return Icons.check_circle;
+    if (score >= 60) return Icons.warning;
+    return Icons.error;
+  }
+
+  String _getScoreDescription(int score) {
+    if (score >= 80) return 'Excellent';
+    if (score >= 60) return 'Good';
+    return 'Needs Attention';
+  }
+
+  String _getBMICategory(double bmi) {
+    if (bmi < 18.5) return 'Underweight';
+    if (bmi < 25) return 'Normal';
+    if (bmi < 30) return 'Overweight';
+    return 'Obese';
+  }
+
+  Color _getBMIColor(double bmi) {
+    if (bmi < 18.5) return Colors.blue;
+    if (bmi < 25) return Colors.green;
+    if (bmi < 30) return Colors.orange;
+    return Colors.red;
   }
 
   Widget _buildInsightItem(String title, String description, Color color) {

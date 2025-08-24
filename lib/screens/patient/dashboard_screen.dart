@@ -34,7 +34,7 @@ class _PatientDashboardState extends State<PatientDashboard> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Health Dashboard'),
-        backgroundColor: Colors.blue[600],
+        backgroundColor: Colors.teal[600],
         foregroundColor: Colors.white,
         actions: [
           PopupMenuButton<String>(
@@ -80,7 +80,7 @@ class _PatientDashboardState extends State<PatientDashboard> {
           );
         },
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.blue[600],
+        selectedItemColor: Colors.teal[600],
         unselectedItemColor: Colors.grey,
         items: [
           BottomNavigationBarItem(
@@ -133,6 +133,63 @@ class _PatientDashboardState extends State<PatientDashboard> {
                       Text(
                         'Track your health data and stay connected with your healthcare providers.',
                         style: TextStyle(color: Colors.grey[600]),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+          SizedBox(height: 20),
+          
+          // Health Score Section
+          Consumer<HealthDataProvider>(
+            builder: (context, healthProvider, child) {
+              final healthScore = healthProvider.getHealthScore();
+              final bmi = healthProvider.calculateBMI();
+              
+              return Card(
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Health Overview',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _buildHealthMetric(
+                              'Health Score',
+                              '$healthScore/100',
+                              Icons.health_and_safety,
+                              _getScoreColor(healthScore),
+                            ),
+                          ),
+                          if (bmi != null)
+                            Expanded(
+                              child: _buildHealthMetric(
+                                'BMI',
+                                bmi.toStringAsFixed(1),
+                                Icons.calculate,
+                                _getBMIColor(bmi),
+                              ),
+                            ),
+                          Expanded(
+                            child: _buildHealthMetric(
+                              'Records',
+                              '${healthProvider.healthDataList.length}',
+                              Icons.analytics,
+                              Colors.teal[600]!,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -362,5 +419,43 @@ class _PatientDashboardState extends State<PatientDashboard> {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     await authProvider.logout();
     Navigator.pushReplacementNamed(context, '/login');
+  }
+
+  Widget _buildHealthMetric(String title, String value, IconData icon, Color color) {
+    return Column(
+      children: [
+        Icon(icon, color: color, size: 24),
+        SizedBox(height: 8),
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: color,
+          ),
+        ),
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: 12,
+            color: Colors.grey[600],
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+
+  Color _getScoreColor(int score) {
+    if (score >= 80) return Colors.green;
+    if (score >= 60) return Colors.orange;
+    return Colors.red;
+  }
+
+  Color _getBMIColor(double bmi) {
+    if (bmi < 18.5) return Colors.blue;
+    if (bmi < 25) return Colors.green;
+    if (bmi < 30) return Colors.orange;
+    return Colors.red;
   }
 }

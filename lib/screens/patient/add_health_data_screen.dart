@@ -171,7 +171,7 @@ class _AddHealthDataScreenState extends State<AddHealthDataScreen> {
                             child: ElevatedButton(
                               onPressed: healthProvider.isLoading ? null : _saveHealthData,
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blue[600],
+                                backgroundColor: Colors.teal[600],
                                 foregroundColor: Colors.white,
                               ),
                               child: healthProvider.isLoading
@@ -191,7 +191,7 @@ class _AddHealthDataScreenState extends State<AddHealthDataScreen> {
               SizedBox(height: 20),
               if (_speechEnabled)
                 Card(
-                  color: Colors.blue[50],
+                  color: Colors.teal[50],
                   child: Padding(
                     padding: EdgeInsets.all(16),
                     child: Column(
@@ -199,21 +199,21 @@ class _AddHealthDataScreenState extends State<AddHealthDataScreen> {
                         Icon(
                           Icons.accessibility,
                           size: 40,
-                          color: Colors.blue[600],
+                          color: Colors.teal[600],
                         ),
                         SizedBox(height: 8),
                         Text(
                           'Voice Input Available',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Colors.blue[800],
+                            color: Colors.teal[800],
                           ),
                         ),
                         SizedBox(height: 4),
                         Text(
                           'Tap the microphone icon to speak your health data values',
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.blue[700]),
+                          style: TextStyle(color: Colors.teal[700]),
                         ),
                       ],
                     ),

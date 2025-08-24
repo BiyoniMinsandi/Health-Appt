@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'providers/auth_provider.dart';
 import 'providers/health_data_provider.dart';
 import 'providers/chat_provider.dart';
+import 'providers/wellness_provider.dart';
 import 'services/database_helper.dart';
 import 'screens/splash_screen.dart';
 import 'screens/auth/login_screen.dart';
@@ -26,12 +27,41 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => HealthDataProvider()),
         ChangeNotifierProvider(create: (_) => ChatProvider()),
+        ChangeNotifierProvider(create: (_) => WellnessProvider()),
       ],
       child: MaterialApp(
         title: 'Health Tracker',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.teal,
+          primaryColor: Colors.teal[600],
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.teal,
+            primary: Colors.teal[600]!,
+            secondary: Colors.green[600]!,
+          ),
+          appBarTheme: AppBarTheme(
+            backgroundColor: Colors.teal[600],
+            foregroundColor: Colors.white,
+            elevation: 2,
+          ),
+          cardTheme: CardTheme(
+            elevation: 2,
+            margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.teal[600],
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+          ),
+          floatingActionButtonTheme: FloatingActionButtonThemeData(
+            backgroundColor: Colors.teal[600],
+            foregroundColor: Colors.white,
+          ),
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         initialRoute: '/splash',
