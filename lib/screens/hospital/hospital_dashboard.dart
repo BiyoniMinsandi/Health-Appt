@@ -16,7 +16,7 @@ class _HospitalDashboardState extends State<HospitalDashboard> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Hospital Dashboard'),
-        backgroundColor: Colors.red[600],
+        backgroundColor: Colors.teal[600],
         foregroundColor: Colors.white,
         actions: [
           PopupMenuButton<String>(
@@ -51,7 +51,7 @@ class _HospitalDashboardState extends State<HospitalDashboard> {
           });
         },
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.red[600],
+        selectedItemColor: Colors.teal[600],
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),

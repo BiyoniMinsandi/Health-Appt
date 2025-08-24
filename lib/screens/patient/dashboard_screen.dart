@@ -41,12 +41,30 @@ class _PatientDashboardState extends State<PatientDashboard> {
             onSelected: (value) {
               if (value == 'logout') {
                 _logout();
+              } else if (value == 'settings') {
+                Navigator.pushNamed(context, '/settings');
               }
             },
             itemBuilder: (BuildContext context) => [
               PopupMenuItem(
+                value: 'settings',
+                child: Row(
+                  children: [
+                    Icon(Icons.settings, color: Colors.grey[600]),
+                    SizedBox(width: 8),
+                    Text('Settings'),
+                  ],
+                ),
+              ),
+              PopupMenuItem(
                 value: 'logout',
-                child: Text('Logout'),
+                child: Row(
+                  children: [
+                    Icon(Icons.logout, color: Colors.grey[600]),
+                    SizedBox(width: 8),
+                    Text('Logout'),
+                  ],
+                ),
               ),
             ],
           ),

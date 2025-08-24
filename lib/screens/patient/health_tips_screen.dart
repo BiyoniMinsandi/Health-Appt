@@ -1,5 +1,6 @@
 // screens/patient/health_tips_screen.dart
 import 'package:flutter/material.dart';
+import 'package:text_to_speech/text_to_speech.dart';
 import '../../models/health_tip.dart';
 import '../../services/api_service.dart';
 
@@ -12,6 +13,7 @@ class _HealthTipsScreenState extends State<HealthTipsScreen> {
   List<HealthTip> _healthTips = [];
   bool _isLoading = true;
   String _selectedCategory = 'all';
+  TextToSpeech tts = TextToSpeech();
 
   final List<String> _categories = ['all', 'nutrition', 'fitness', 'wellness', 'mental'];
 
@@ -115,6 +117,12 @@ class _HealthTipsScreenState extends State<HealthTipsScreen> {
                                       ),
                                     ),
                                   ),
+                                  IconButton(
+                                    icon: Icon(Icons.volume_up),
+                                    color: Colors.teal[600],
+                                    onPressed: () => _speakHealthTip(tip),
+                                    tooltip: 'Listen to health tip',
+                                  ),
                                 ],
                               ),
                               SizedBox(height: 12),
@@ -154,5 +162,10 @@ class _HealthTipsScreenState extends State<HealthTipsScreen> {
         .where((tip) =>
             tip.category.toLowerCase() == _selectedCategory.toLowerCase())
         .toList();
+  }
+
+  Future<void> _speakHealthTip(HealthTip tip) async {
+    final textToSpeak = "${tip.title}. ${tip.description}";
+    await tts.speak(textToSpeak);
   }
 }

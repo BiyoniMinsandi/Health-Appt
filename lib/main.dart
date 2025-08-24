@@ -12,6 +12,7 @@ import 'screens/patient/dashboard_screen.dart';
 import 'screens/doctor/doctor_dashboard.dart';
 import 'screens/hospital/hospital_dashboard.dart';
 import 'screens/caregiver/caregiver_dashboard.dart';
+import 'screens/common/settings_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -73,6 +74,7 @@ class MyApp extends StatelessWidget {
           '/doctor-dashboard': (context) => DoctorDashboard(),
           '/hospital-dashboard': (context) => HospitalDashboard(),
           '/caregiver-dashboard': (context) => CaregiverDashboard(),
+          '/settings': (context) => SettingsScreen(),
         },
       ),
     );
