@@ -12,7 +12,7 @@ import 'screens/patient/dashboard_screen.dart';
 import 'screens/doctor/doctor_dashboard.dart';
 import 'screens/hospital/hospital_dashboard.dart';
 import 'screens/caregiver/caregiver_dashboard.dart';
-import 'screens/common/settings_screen.dart';
+import 'services/notification_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,51 +30,60 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ChatProvider()),
         ChangeNotifierProvider(create: (_) => WellnessProvider()),
       ],
-      child: MaterialApp(
-        title: 'Health Tracker',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.teal,
-          primaryColor: Colors.teal[600],
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.teal,
-            primary: Colors.teal[600]!,
-            secondary: Colors.green[600]!,
-          ),
-          appBarTheme: AppBarTheme(
-            backgroundColor: Colors.teal[600],
-            foregroundColor: Colors.white,
-            elevation: 2,
-          ),
-          cardTheme: CardTheme(
-            elevation: 2,
-            margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          ),
-          elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.teal[600],
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+      child: Builder(
+        builder: (context) {
+          // Set the context for notification service
+          NotificationService.setContext(context);
+          
+          return MaterialApp(
+            title: 'Health Tracker',
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              primarySwatch: Colors.teal,
+              primaryColor: Colors.teal[600],
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: Colors.teal,
+                primary: Colors.teal[600]!,
+                secondary: Colors.green[600]!,
               ),
+              appBarTheme: AppBarTheme(
+                backgroundColor: Colors.teal[600],
+                foregroundColor: Colors.white,
+                elevation: 2,
+              ),
+              cardTheme: CardTheme(
+                elevation: 2,
+                margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              ),
+              elevatedButtonTheme: ElevatedButtonThemeData(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.teal[600],
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ),
+              floatingActionButtonTheme: FloatingActionButtonThemeData(
+                backgroundColor: Colors.teal[600],
+                foregroundColor: Colors.white,
+              ),
+              visualDensity: VisualDensity.adaptivePlatformDensity,
             ),
-          ),
-          floatingActionButtonTheme: FloatingActionButtonThemeData(
-            backgroundColor: Colors.teal[600],
-            foregroundColor: Colors.white,
-          ),
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        initialRoute: '/splash',
-        routes: {
-          '/splash': (context) => SplashScreen(),
-          '/login': (context) => LoginScreen(),
-          '/signup': (context) => SignupScreen(),
-          '/patient-dashboard': (context) => PatientDashboard(),
-          '/doctor-dashboard': (context) => DoctorDashboard(),
-          '/hospital-dashboard': (context) => HospitalDashboard(),
-          '/caregiver-dashboard': (context) => CaregiverDashboard(),
-          '/settings': (context) => SettingsScreen(),
+            initialRoute: '/splash',
+            routes: {
+              '/splash': (context) => SplashScreen(),
+              '/login': (context) => LoginScreen(),
+              '/signup': (context) => SignupScreen(),
+              '/patient-dashboard': (context) => PatientDashboard(),
+              '/doctor-dashboard': (context) => DoctorDashboard(),
+              '/hospital-dashboard': (context) => HospitalDashboard(),
+              '/caregiver-dashboard': (context) => CaregiverDashboard(),
+              '/settings': (context) => SettingsScreen(),
+              '/appointments': (context) => AppointmentsScreen(userType: 'patient'),
+              '/health-reports': (context) => HealthReportsScreen(),
+            },
+          );
         },
       ),
     );

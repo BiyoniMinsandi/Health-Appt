@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
+import '../common/appointments_screen.dart';
 
 class DoctorDashboard extends StatefulWidget {
   @override
@@ -40,7 +41,7 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
           _buildDoctorHome(),
           _buildPatientsList(),
           _buildAnalytics(),
-          _buildMessages(),
+          _buildAppointments(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -66,8 +67,8 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
             label: 'Analytics',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.message),
-            label: 'Messages',
+            icon: Icon(Icons.calendar_today),
+            label: 'Appointments',
           ),
         ],
       ),
@@ -239,14 +240,8 @@ class _DoctorDashboardState extends State<DoctorDashboard> {
     );
   }
 
-  Widget _buildMessages() {
-    return Center(
-      child: Text(
-        'Messages\n(Coming Soon)',
-        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 18, color: Colors.grey[600]),
-      ),
-    );
+  Widget _buildAppointments() {
+    return AppointmentsScreen(userType: 'doctor');
   }
 
   void _logout() async {

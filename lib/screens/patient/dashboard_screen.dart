@@ -6,7 +6,9 @@ import '../../providers/health_data_provider.dart';
 import 'add_health_data_screen.dart';
 import 'health_analytics_screen.dart';
 import 'chat_list_screen.dart';
+import 'medication_reminders_screen.dart';
 import '../common/emergency_screen.dart';
+import '../common/health_reports_screen.dart';
 
 class PatientDashboard extends StatefulWidget {
   @override
@@ -43,9 +45,43 @@ class _PatientDashboardState extends State<PatientDashboard> {
                 _logout();
               } else if (value == 'settings') {
                 Navigator.pushNamed(context, '/settings');
+              } else if (value == 'reports') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HealthReportsScreen(),
+                  ),
+                );
+              } else if (value == 'medications') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MedicationRemindersScreen(),
+                  ),
+                );
               }
             },
             itemBuilder: (BuildContext context) => [
+              PopupMenuItem(
+                value: 'reports',
+                child: Row(
+                  children: [
+                    Icon(Icons.assessment, color: Colors.grey[600]),
+                    SizedBox(width: 8),
+                    Text('Health Reports'),
+                  ],
+                ),
+              ),
+              PopupMenuItem(
+                value: 'medications',
+                child: Row(
+                  children: [
+                    Icon(Icons.medical_services, color: Colors.grey[600]),
+                    SizedBox(width: 8),
+                    Text('Medications'),
+                  ],
+                ),
+              ),
               PopupMenuItem(
                 value: 'settings',
                 child: Row(
